@@ -1,0 +1,34 @@
+# Live data
+logs/
+data/imports/
+
+# Runtime data
+config/roster.csv
+data/student_folders.csv
+
+# Examples are committed instead
+!config/roster.example.csv
+!data/student_folders.example.csv
+
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+
+# GPIO runtime
+.lgd*
+
+# Google credentials
+config/credentials.json
+config/token*.json
+
+# Editor backups
+*~
+#*#
+.#*
+
+# OS junk
+.DS_Store
+Thumbs.db

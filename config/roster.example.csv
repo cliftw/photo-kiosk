@@ -1,0 +1,6 @@
+id,name,email,folder_id,active
+123456,Test Student,teststudent@hsd.k12.or.us,,yes
+234567,Jane Smith,janesmith123@hsd.k12.or.us,,yes
+345678,Bogus Email,bogusstudent999999@hsd.k12.or.us,,yes
+359924,DWC,foofoo@hsd.k12.or.us,,yes
+456789,Inactive Student,inactive@hsd.k12.or.us,,no
