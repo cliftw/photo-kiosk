@@ -13,11 +13,8 @@ from pathlib import Path
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
+from src.google_drive_api import SCOPES
 
-
-SCOPES = [
-    "https://www.googleapis.com/auth/drive"
-]
 
 CONFIG_DIR = Path("config")
 TOKEN_FILE = CONFIG_DIR / "token.json"
