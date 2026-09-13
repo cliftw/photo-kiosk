@@ -47,7 +47,7 @@ def detect_usb_storage_devices():
         return devices
 
     for mount in MEDIA_ROOT.iterdir():
-        if mount.is_dir():
+        if mount.is_mount():
             devices.append({
                 "type": "usb_storage",
                 "description": mount.name,
@@ -58,9 +58,32 @@ def detect_usb_storage_devices():
 
 
 def detect_devices():
+    gphoto_devices = detect_gphoto_devices()
+    usb_devices = detect_usb_storage_devices()
+
+    usb_mount_paths = {
+        device["mount_path"]
+        for device in usb_devices
+    }
+
     devices = []
-    devices.extend(detect_gphoto_devices())
-    devices.extend(detect_usb_storage_devices())
+
+    for device in gphoto_devices:
+        description = device["description"]
+        parts = description.rsplit(None, 1)
+
+        if len(parts) == 2:
+            port = parts[1]
+
+            if port.startswith("disk:"):
+                disk_path = port[len("disk:"):]
+
+                if disk_path in usb_mount_paths:
+                    continue
+
+        devices.append(device)
+
+    devices.extend(usb_devices)
     return devices
 
 
