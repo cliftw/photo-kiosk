@@ -356,7 +356,7 @@ def show_startup_splash(lcd):
     time.sleep(2)
 
     lcd.set_rgb(0, 128, 255)
-    lcd.message(f"Photo Kiosk {APP_VERSION}", "Ready")
+    lcd.message(f"Version {APP_VERSION}", "Ready")
     time.sleep(2)
 
 def run_once(lcd, keypad):

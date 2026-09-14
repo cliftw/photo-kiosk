@@ -10,9 +10,9 @@
 
 APP_NAME = "Hilhi Engineering Photo Kiosk"
 APP_SHORT_NAME = "Photo Kiosk"
-APP_VERSION = "v1.0"
+APP_VERSION = "v1.0.3"
 APP_YEAR = "2026"
 APP_AUTHOR = "Wayne Clift"
 APP_ORG = "Hilhi Engineering"
 
-BUILD_DATE = "2026-06-18"
+BUILD_DATE = "2026-09-13"
