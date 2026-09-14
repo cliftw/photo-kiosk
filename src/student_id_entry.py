@@ -39,6 +39,8 @@ def get_student_id(lcd, keypad):
                     display_entry()
 
             elif key == "#":
+                if not entry:
+                    return None
 
                 if len(entry) == ID_LENGTH:
                     lcd.set_rgb(0, 128, 255)

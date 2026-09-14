@@ -304,6 +304,8 @@ def get_valid_student(lcd, keypad):
         lcd.message("Camera found", "Enter ID")
 
         student_id = get_student_id(lcd, keypad)
+        if student_id is None:
+            return None
 
         if handle_admin_command(student_id, lcd):
             continue
@@ -366,6 +368,19 @@ def run_once(lcd, keypad):
         f"{device['description']}"
     )
     student = get_valid_student(lcd, keypad)
+
+    if student is None:
+        return
+
+    status, devices = device_status()
+
+    if status != "ready" or devices[0] != device:
+        logger.warning("DEVICE_CHANGED_DURING_ID_ENTRY")
+        lcd.set_rgb(255, 128, 0)
+        lcd.message("Camera changed", "Try again")
+        time.sleep(2)
+        return
+
     logger.info(
         f"STUDENT_VALIDATED,"
         f"{student['id']},"
