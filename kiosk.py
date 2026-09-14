@@ -22,6 +22,7 @@ from src.google_drive_api import (
     share_folder_with_student,
     upload_file_to_folder,
     get_drive_service,
+    get_next_upload_number,
 )
 from src.lcd_grove import GroveRgbLcd
 from src.keypad_matrix import MatrixKeypad
@@ -433,11 +434,17 @@ def run_once(lcd, keypad):
     logger.info(
         f"UPLOAD_START,student={student['id']},count={len(imported_files)}"
     )
+
+    upload_number = get_next_upload_number(folder_id)
+    upload_prefix = f"U{upload_number:03d}_"
+
     for index, path in enumerate(imported_files, start=1):
+        drive_filename = f"{upload_prefix}{path.name}"
+
         lcd.write_line(0, f"Upload {index}/{total}")
         lcd.write_line(1, path.name[:16])
 
-        uploaded = upload_file_to_folder(path, folder_id)
+        uploaded = upload_file_to_folder(path, folder_id, drive_filename=drive_filename)
 
         print(f"{uploaded['action'].title()}: {uploaded['name']}")
         logger.info(

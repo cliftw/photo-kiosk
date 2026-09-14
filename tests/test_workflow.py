@@ -17,6 +17,7 @@ from src.google_drive_api import (
     get_or_create_student_folder,
     share_folder_with_student,
     upload_file_to_folder,
+    get_next_upload_number,
 )
 
 
@@ -128,9 +129,17 @@ def main():
     print("Uploading to student Drive folder...")
     print()
 
+    upload_number = get_next_upload_number(folder_id)
+    upload_prefix = f"U{upload_number:03d}_"
+
     for path in imported_files:
-        print(f"Uploading {path.name}...")
-        uploaded = upload_file_to_folder(path, folder_id)
+        drive_filename = f"{upload_prefix}{path.name}"
+        print(f"Uploading {drive_filename}...")
+        uploaded = upload_file_to_folder(
+            path,
+            folder_id,
+            drive_filename=drive_filename,
+        )
         print(f"{uploaded['action'].title()}: {uploaded['name']}")
 
     print()

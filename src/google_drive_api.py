@@ -9,6 +9,7 @@
 # =============================================================================
 #!/usr/bin/env python3
 
+import re
 from pathlib import Path
 
 from google.auth.transport.requests import Request
@@ -146,15 +147,37 @@ def find_file_in_folder(service, filename, folder_id):
     return None
 
 
-def upload_file_to_folder(local_file, folder_id):
+def get_next_upload_number(folder_id):
+    service = get_drive_service()
+
+    response = service.files().list(
+        q=f"'{folder_id}' in parents and trashed = false",
+        spaces="drive",
+        fields="files(name)",
+    ).execute()
+
+    highest = 0
+
+    for file in response.get("files", []):
+        match = re.match(r"^U(\d{3})_", file["name"])
+
+        if match:
+            highest = max(highest, int(match.group(1)))
+
+    return highest + 1
+
+
+def upload_file_to_folder(local_file, folder_id, drive_filename=None):
     from googleapiclient.http import MediaFileUpload
 
     local_file = Path(local_file)
+    if drive_filename is None:
+        drive_filename = local_file.name
     service = get_drive_service()
 
     existing_file_id = find_file_in_folder(
         service,
-        local_file.name,
+        drive_filename,
         folder_id,
     )
 
@@ -177,7 +200,7 @@ def upload_file_to_folder(local_file, folder_id):
         }
 
     metadata = {
-        "name": local_file.name,
+        "name": drive_filename,
         "parents": [folder_id],
     }
 
